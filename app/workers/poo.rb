@@ -2,7 +2,7 @@ class Poo
     include Sidekiq::Worker
 
     def perform(args)
-        puts "*" * 30
-        puts "IT'S DONE"
+        p "*" * 30
+        p "IT'S DONE"
     end
 end
