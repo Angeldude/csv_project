@@ -26,8 +26,8 @@ class CreateCsvTables < ActiveRecord::Migration[6.0]
       create index processed_csvs_id_idx on processed_csvs(id);
       create table csv_errors(
         row_number integer not null,
-        processed_csvs_id integer not null
-          references processed_csvs(id)
+        identifier varchar(256) not null unique,
+        row_errors text[]
       );
     })
   end

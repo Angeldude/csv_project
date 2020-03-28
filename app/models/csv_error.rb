@@ -1,0 +1,2 @@
+class CsvError < ApplicationRecord
+end
