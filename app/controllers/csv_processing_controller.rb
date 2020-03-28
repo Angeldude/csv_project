@@ -1,6 +1,10 @@
 class CsvProcessingController < ApplicationController
-    def index
+    def input
         @csv_file = CsvFile.new
+    end
+
+    def output
+        @csvs = ProcessedCsv.find_by_identifier(params[:identifier])
     end
 
     def create
@@ -13,13 +17,12 @@ class CsvProcessingController < ApplicationController
             elsif @csv_file.save
                 format.html { redirect_to root_path, notice: "We did it!"}
             else
-                format.html { render :index }
+                format.html { render :input }
             end
         end
     end
 
     private
-
     def get_params
         params.require(:csv_file).permit(:file, :identifier)
     end

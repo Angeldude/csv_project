@@ -20,19 +20,26 @@ class CreateCsvTables < ActiveRecord::Migration[6.0]
         email varchar(256),
         phone varchar(10),
         row_number integer not null,
+        identifier varchar(256) not null,
         primary key (id)
       );
       create index processed_csvs_id_idx on processed_csvs(id);
+      create table csv_errors(
+        row_number integer not null,
+        processed_csvs_id integer not null
+          references processed_csvs(id)
+      );
     })
   end
 
   def down
     execute(%{
-      drop table csv_files;
-      drop table processed_csvs;
-      drop sequence processed_csvs_id_seq;
-      drop sequence csv_files_id_seq;
-      drop index processed_csvs_id_idx;
+      drop index if exists processed_csvs_id_idx;
+      drop table if exists csv_files;
+      drop table if exists csv_errors;
+      drop table if exists processed_csvs;
+      drop sequence if exists processed_csvs_id_seq;
+      drop sequence if exists csv_files_id_seq;
     })
   end
 end
