@@ -1,6 +1,8 @@
 <main>
-    <label for="identifier">Identifier</label>
-    <input type="text" name="identifier" id="identifier">
-    <button>Browse</button>
-    <button>Submit</button>
+    <%= form_with url: import_path do |f| %>
+      <%= f.label :identifier, "Identifier" %>
+      <%= f.text_field :identifier %>
+      <%= f.file_field :file %>
+      <%= f.submit "Submit" %>
+    <% end %>
 </main>
