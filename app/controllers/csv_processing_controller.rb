@@ -5,6 +5,7 @@ class CsvProcessingController < ApplicationController
 
     def create
         @csv_file = CsvFile.new(get_params)
+        @csv_file.save!
         redirect_to root_path
     end
 
