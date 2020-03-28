@@ -1,6 +1,6 @@
 class CsvFile < ApplicationRecord
     has_one_attached :file
-    validates :identifier, presence: true, length: { minimum: 2}, uniqueness: true
+    validates :identifier, presence: true, length: {minimum: 2}, uniqueness: true
     validates :file, presence: true
     validate :correct_content_type
 
