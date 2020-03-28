@@ -4,9 +4,13 @@ class CsvProcessingController < ApplicationController
     end
 
     def create
-        @csv_file = CsvFile.new(get_params)
+        @csv_file = CsvFile.find_or_create_by(identifier: get_params[:identifier])
         respond_to do |format|
-            if @csv_file.save
+            if @csv_file.present?
+                @csv_file.file.detach
+                @csv_file.file.attach(get_params[:file])
+                format.html {redirect_to root_path, notice: "#{get_params[:identifier]} updated"}
+            elsif @csv_file.save
                 format.html { redirect_to root_path, notice: "We did it!"}
             else
                 format.html { render :index }
