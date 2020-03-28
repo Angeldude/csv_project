@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe ProcessedCSV do
+RSpec.describe ProcessedCsv do
     it 'should have some data' do
-        csv = ProcessedCSV.new
-        expect(csv).to be_truthy
+        csv = ProcessedCsv.new
+        expect(csv.save!).to raise_exception
     end
 end
