@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
   root 'csv_processing#index'
 
-  post '/import' => 'csv_processing#import', as: :import
+  post '/create' => 'csv_processing#create', as: :csv_files
+
 end
