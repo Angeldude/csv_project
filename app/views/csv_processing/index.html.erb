@@ -1,8 +1,8 @@
 <main>
     <%= form_with url: import_path do |f| %>
       <%= f.label :identifier, "Identifier" %>
-      <%= f.text_field :identifier %>
-      <%= f.file_field :file %>
+      <%= f.text_field :identifier, minlength: 2, required: true %>
+      <%= f.file_field :file, accept: '.csv' %>
       <%= f.submit "Submit" %>
     <% end %>
 </main>

@@ -3,7 +3,6 @@ class CsvProcessingController < ApplicationController
     end
 
     def import
-        ProcessedCsv.import(get_params)
         redirect_to root_path, notification: "done!"
     end
 
