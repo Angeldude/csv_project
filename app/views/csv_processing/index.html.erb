@@ -1,8 +1,3 @@
-<main>
-    <%= form_with model: @csv_file do |f| %>
-      <%= f.label :identifier, "Identifier" %>
-      <%= f.text_field :identifier, minlength: 2, required: true %>
-      <%= f.file_field :file, accept: '.csv' %>
-      <%= f.submit "Submit" %>
-    <% end %>
+<main class="section container">
+    <%= render 'form', csv: @csv_file%>
 </main>

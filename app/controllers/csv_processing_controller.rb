@@ -5,8 +5,13 @@ class CsvProcessingController < ApplicationController
 
     def create
         @csv_file = CsvFile.new(get_params)
-        @csv_file.save!
-        redirect_to root_path
+        respond_to do |format|
+            if @csv_file.save
+                format.html { redirect_to root_path, notice: "We did it!"}
+            else
+                format.html { render :index }
+            end
+        end
     end
 
     private
