@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root 'csv_processing#input'
 
-  post '/' => 'csv_processing#create', as: :csv_files
+  post '/' => 'csv_processing#create_or_update', as: :csv_files
+
+  patch '/' => 'csv_processing#create_or_update', as: :csv_file
 
 end

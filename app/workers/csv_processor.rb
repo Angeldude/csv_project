@@ -1,4 +1,4 @@
-class Poo
+class CsvProcessor
     include Sidekiq::Worker
 
     def perform(args)
