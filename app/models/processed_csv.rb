@@ -1,11 +1,13 @@
 class ProcessedCsv < ApplicationRecord
+    validates :identifier, uniqueness: {scope: :row_number, message: 'can only be 1 per row'}
     validates :first, length: {minimum: 2}, allow_nil: true, format: {with: /\A[a-zA-z]*\z/, message: 'can only contain letters'}
-    validates :first, presence: { message: "can't be blank if Last name is filled"}, if: Proc.new{|row| row.last.present?}
+    validates :first, presence: { message: "can't be blank if Last is filled"}, if: Proc.new{|row| row.last.present?}
     validates :last, length: {minimum: 2}, allow_nil: true, format: {with: /\A[a-zA-z]*\z/, message: 'can only contain letters'}
 
     validates :email, format: {with: URI::MailTo::EMAIL_REGEXP, message: 'must be standard and valid'}, allow_nil: true
     validates :phone, format: {with: /\A[\d\.\-\)\(]*\z/ , message: 'must contain only these characters: 0-9, - ( ) .'}
     validate :phone_validate
+    
 
     def phone_number
         phone.clone.insert(0,'(').insert(4,')').insert(8,'-')
@@ -13,6 +15,7 @@ class ProcessedCsv < ApplicationRecord
 
     private 
     def phone_validate
+        return if phone.blank?
         testing = phone.scan(/[\d]/).join
         if testing.size == 10
             if testing[0].eql?('0') || testing[3].eql?('1')

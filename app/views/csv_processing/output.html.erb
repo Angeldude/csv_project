@@ -12,6 +12,8 @@
   </section>
   <section class="field content">
        <% if @csvs.present? %>
+            <h2>Identifier Tag</h2>
+            <h4><%= @csvs.first.identifier %></h4>
             <table>
                 <thead>
                     <tr>
@@ -30,6 +32,29 @@
                         <td><%= row.last %></td>
                         <td><%= row.phone_number %></td>
                         <td><%= row.email %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        <% end %>
+   </section>
+    <section class="field content">
+       <% if @errors.present? %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Row Number</th>
+                        <th>Errors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @errors.each do |row| %>
+                    <tr>
+                        <td><%= row.row_number %></td>
+                        <td><% row.row_errors.each do |err|%>
+                            <%= err %>,
+                          <% end %>
+                        </td>
                     </tr>
                     <% end %>
                 </tbody>

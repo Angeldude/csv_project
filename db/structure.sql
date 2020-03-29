@@ -107,6 +107,82 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: csv_errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.csv_errors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: csv_errors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.csv_errors (
+    id integer DEFAULT nextval('public.csv_errors_id_seq'::regclass) NOT NULL,
+    row_number integer NOT NULL,
+    identifier character varying(256) NOT NULL,
+    row_errors text[]
+);
+
+
+--
+-- Name: csv_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.csv_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: csv_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.csv_files (
+    id integer DEFAULT nextval('public.csv_files_id_seq'::regclass) NOT NULL,
+    identifier character varying(256) NOT NULL,
+    CONSTRAINT csv_files_identifier_check CHECK ((length((identifier)::text) > 1))
+);
+
+
+--
+-- Name: processed_csvs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.processed_csvs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: processed_csvs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.processed_csvs (
+    id integer DEFAULT nextval('public.processed_csvs_id_seq'::regclass) NOT NULL,
+    first character varying(256),
+    last character varying(256),
+    email character varying(256),
+    phone character varying(10),
+    row_number integer NOT NULL,
+    identifier character varying(256) NOT NULL,
+    CONSTRAINT processed_csvs_first_check CHECK ((length((first)::text) > 1)),
+    CONSTRAINT processed_csvs_last_check CHECK ((length((last)::text) > 1))
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -154,6 +230,54 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: csv_errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.csv_errors
+    ADD CONSTRAINT csv_errors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: csv_errors_row_number_identifier_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.csv_errors
+    ADD CONSTRAINT csv_errors_row_number_identifier_key UNIQUE (row_number, identifier);
+
+
+--
+-- Name: csv_files_identifier_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.csv_files
+    ADD CONSTRAINT csv_files_identifier_key UNIQUE (identifier);
+
+
+--
+-- Name: csv_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.csv_files
+    ADD CONSTRAINT csv_files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: processed_csvs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.processed_csvs
+    ADD CONSTRAINT processed_csvs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: processed_csvs_row_number_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.processed_csvs
+    ADD CONSTRAINT processed_csvs_row_number_key UNIQUE (row_number);
+
+
+--
 -- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -183,6 +307,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: processed_csvs_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX processed_csvs_id_idx ON public.processed_csvs USING btree (id);
+
+
+--
 -- Name: fk_rails_c3b3935057; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -197,6 +328,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20200328161452');
+('20200328161452'),
+('20200328162920');
 
 
