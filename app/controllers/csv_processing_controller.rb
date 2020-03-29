@@ -1,4 +1,5 @@
 class CsvProcessingController < ApplicationController
+    before_action :set_csv_file, only: [:create]
     def input
         @csv_file = CsvFile.new
     end
@@ -8,15 +9,15 @@ class CsvProcessingController < ApplicationController
     end
 
     def create
-        @csv_file = CsvFile.find_or_create_by!(identifier: get_params[:identifier])
+        @csv_file ||= CsvFile.new(get_params)
         respond_to do |format|
-            if @csv_file.present?
+            if @csv_file.save && get_params[:file].present?
+                format.html { redirect_to root_path, notice: "We did it!"}
+            elsif @csv_file.present?
                 @csv_file.file.detach
                 @csv_file.file.attach(get_params[:file])
                 # Poo.perform_async(get_params[:identifier])
                 format.html {redirect_to root_path, notice: "#{get_params[:identifier]} updated"}
-            elsif @csv_file.save
-                format.html { redirect_to root_path, notice: "We did it!"}
             else
                 format.html { render :input }
             end
@@ -24,6 +25,9 @@ class CsvProcessingController < ApplicationController
     end
 
     private
+    def set_csv_file
+        @csv_file = CsvFile.find_by_identifier(get_params[:identifier])
+    end
     def get_params
         params.require(:csv_file).permit(:file, :identifier)
     end
