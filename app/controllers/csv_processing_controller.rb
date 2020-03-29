@@ -14,7 +14,7 @@ class CsvProcessingController < ApplicationController
                 if get_params[:file].present?
                     @csv_file.file.detach
                     @csv_file.file.attach(get_params[:file])
-                    CsvProcessor.perform_async(get_params[:identifier])
+                    CsvProcessor.perform_later(get_params[:identifier])
                     format.html {redirect_to root_path, notice: "#{get_params[:identifier]} updated!"}
                 else
                     @csv_file.file = nil
@@ -24,7 +24,7 @@ class CsvProcessingController < ApplicationController
             else
                 @csv_file = CsvFile.new(get_params)
                 if @csv_file.save
-                    CsvProcessor.perform_async(get_params[:identifier])
+                    CsvProcessor.perform_later(get_params[:identifier])
                     format.html { redirect_to root_path, notice: "We did it!"}
                 else
                     format.html { render :input }
