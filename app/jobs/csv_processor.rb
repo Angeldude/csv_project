@@ -30,7 +30,7 @@ class CsvProcessor < ApplicationJob
         begin
             phone.scan(/\d/).join
         rescue NoMethodError
-            ''
+            phone
         end
     end
 
