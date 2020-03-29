@@ -2,10 +2,19 @@
  
   #notice {
     color: green; }
+
+  .field {
+    text-align: center;
+  }
+
+  .field ul {
+    list-style-type: none;
+  }
   
   .field_with_errors {
     background-color: red;
-    display: table; }
+    display: table; 
+  }
   
   #error_explanation {
 
@@ -14,14 +23,11 @@
     background-color: #f0f0f0; }
   
   #error_explanation h2 {
-    text-align: left;
     font-weight: bold;
     background-color: #c00;
     color: #fff; }
   
   #error_explanation ul li {
-    list-style: square; }
+    list-style: circle; }
   
-  label {
-    display: block; }
   

@@ -4,7 +4,13 @@ class CsvProcessingController < ApplicationController
     end
 
     def output
-        @csvs = ProcessedCsv.find_by_identifier(params[:identifier])
+    end
+    
+    def search
+        # @csvs = ProcessedCsv.find_by_identifier(params[:identifier])
+        # @errors = CsvError.find_by_identifier(params[:identifier])
+        @ok = "Hi there!"
+        render :output
     end
 
     def create_or_update

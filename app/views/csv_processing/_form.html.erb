@@ -1,28 +1,30 @@
-<%= form_with model: csv, local: true do |f| %>
-    <% if csv.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(csv.errors.count, "error") %> prohibited this CSV from being saved:</h2>
+<section class="level-item">
+  <%= form_with model: csv, local: true do |f| %>
+      <% if csv.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(csv.errors.count, "error") %> prohibited this CSV from being saved:</h2>
 
-        <ul>
-          <% csv.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+          <ul>
+            <% csv.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% flash.each do |type, msg|%>
+        <div id="notice">
+          <%= msg %>
+        </div>
+      <% end %>
+      <div class="field">
+        <%= f.label :identifier, "Identifier" %>
+        <%= f.text_field :identifier, minlength: 2, required: true, placeholder: 'User defined identifier' %>
       </div>
-    <% end %>
-    <% flash.each do |type, msg|%>
-      <div id="notice">
-        <%= msg %>
+      <div class="field">
+        <%= f.file_field :file, accept: '.csv' %>
       </div>
-    <% end %>
-    <div class="field">
-      <%= f.label :identifier, "Identifier" %>
-      <%= f.text_field :identifier, minlength: 2, required: true %>
-    </div>
-    <div class="field">
-      <%= f.file_field :file, accept: '.csv' %>
-    </div>
-    <div class="actions">
-      <%= f.submit "Submit" %>
-    </div>
-<% end %>
+      <div class="actions">
+        <%= f.submit "Submit", class: "button is-primary" %>
+      </div>
+  <% end %>
+</section>

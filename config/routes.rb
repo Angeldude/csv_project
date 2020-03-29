@@ -7,4 +7,9 @@ Rails.application.routes.draw do
 
   patch '/' => 'csv_processing#create_or_update', as: :csv_file
 
+  get '/input' => 'csv_processing#input'
+  get '/output' => 'csv_processing#output'
+
+  post '/output' => 'csv_processing#search', as: :search
+
 end
