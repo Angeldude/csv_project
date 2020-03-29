@@ -1,4 +1,5 @@
 class CsvProcessingController < ApplicationController
+    before_action :set_results, only: [:output, :search]
     def input
         @csv_file = CsvFile.new
     end
@@ -7,9 +8,6 @@ class CsvProcessingController < ApplicationController
     end
     
     def search
-        # @csvs = ProcessedCsv.find_by_identifier(params[:identifier])
-        # @errors = CsvError.find_by_identifier(params[:identifier])
-        @ok = "Hi there!"
         render :output
     end
 
@@ -40,6 +38,11 @@ class CsvProcessingController < ApplicationController
     end
 
     private
+    def set_results
+        @csvs = ProcessedCsv.where(identifier: params[:identifier])
+        @errors = CsvError.where(identifier: params[:identifier])
+    end
+   
     def get_params
         params.require(:csv_file).permit(:file, :identifier)
     end

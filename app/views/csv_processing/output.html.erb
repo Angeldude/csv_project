@@ -11,12 +11,29 @@
         <% end %>
   </section>
   <section class="field content">
-        <ul>
-            <li><%= @ok %></li>
-            <li><%= @ok %></li>
-            <li><%= @ok %></li>
-            <li><%= @ok %></li>
-            <li><%= @ok %></li>
-        </ul>
+       <% if @csvs.present? %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Row Number</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @csvs.each do |row| %>
+                    <tr>
+                        <td><%= row.row_number %></td>
+                        <td><%= row.first %></td>
+                        <td><%= row.last %></td>
+                        <td><%= row.phone_number %></td>
+                        <td><%= row.email %></td>
+                    </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        <% end %>
    </section>
 </main>
