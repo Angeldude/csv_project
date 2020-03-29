@@ -19,7 +19,7 @@ class CsvProcessor < ApplicationJob
             begin
                 temp.save!
                 CsvError.delete(err)
-            rescue ActiveRecord::RecordInvalid => e
+            rescue ActiveRecord::RecordInvalid
                 CsvError.delete(err)
                 CsvError.create(identifier: identifier, row_number: i, row_errors: temp.errors.full_messages)
             end
