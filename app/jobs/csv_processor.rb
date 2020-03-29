@@ -28,7 +28,8 @@ class CsvProcessor < ApplicationJob
 
     def phone_format(phone)
         begin
-            phone.scan(/\d/).join
+            temp = phone.scan(/\d/).join
+            temp.blank? ? phone : temp
         rescue NoMethodError
             phone
         end
