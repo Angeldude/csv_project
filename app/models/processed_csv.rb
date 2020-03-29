@@ -10,7 +10,7 @@ class ProcessedCsv < ApplicationRecord
     
 
     def phone_number
-        phone.clone.insert(0,'(').insert(4,')').insert(8,'-')
+        phone.present? ? phone.clone.insert(0,'(').insert(4,')').insert(8,'-') : ''
     end
 
     private 
