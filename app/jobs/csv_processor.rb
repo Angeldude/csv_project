@@ -15,12 +15,11 @@ class CsvProcessor < ApplicationJob
             row_hash = csv_hash(row, identifier, i)
             hashed = row_hash
             temp = ProcessedCsv.new(hashed)
+            err = CsvError.where(identifier: identifier, row_number: i)
             begin
                 temp.save!
-                err = CsvError.where(identifier: identifier, row_number: i)
                 CsvError.delete(err)
             rescue ActiveRecord::RecordInvalid => e
-                err = CsvError.where(identifier: identifier, row_number: i)
                 CsvError.delete(err)
                 CsvError.create(identifier: identifier, row_number: i, row_errors: temp.errors.full_messages)
             end
