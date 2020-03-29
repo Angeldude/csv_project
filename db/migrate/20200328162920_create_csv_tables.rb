@@ -19,9 +19,10 @@ class CreateCsvTables < ActiveRecord::Migration[6.0]
           check(length(last) > 1),
         email varchar(256),
         phone varchar(10),
-        row_number integer not null unique,
+        row_number integer not null,
         identifier varchar(256) not null,
-        primary key (id)
+        primary key (id),
+        unique(row_number, identifier)
       );
       create index processed_csvs_id_idx on processed_csvs(id);
       create sequence csv_errors_id_seq;

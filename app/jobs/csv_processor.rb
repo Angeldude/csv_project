@@ -1,5 +1,5 @@
 class CsvProcessor < ApplicationJob
-    queue_as :default
+    queue_as :low_priority
 
     require 'csv'
     def perform(identifier)
@@ -9,7 +9,7 @@ class CsvProcessor < ApplicationJob
 
     private 
     def csv_process(csv, identifier)
-        CSV.parse(csv.file.download, headers: true).each_with_index do |row, i|
+        CSV.parse(csv_file, headers: true).each_with_index do |row, i|
             row_hash = csv_hash(row)
             temp = ProcessedCsv.find_by_row_number(i)
             if temp.present?
@@ -23,8 +23,9 @@ class CsvProcessor < ApplicationJob
             begin
                 temp.save!
                 err = CsvError.where(identifier: identifier, row_number: i)
-                err.first.delete if err.present?
+                err.first.destroy if err.present?
             rescue ActiveRecord::RecordInvalid => e
+                err = CsvError.where(identifier: identifier, row_number: i)
                 if err.present?
                     err.first.update_attribute(:row_errors, temp.errors.full_messages)
                 else

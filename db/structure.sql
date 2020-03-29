@@ -270,11 +270,11 @@ ALTER TABLE ONLY public.processed_csvs
 
 
 --
--- Name: processed_csvs_row_number_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: processed_csvs_row_number_identifier_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.processed_csvs
-    ADD CONSTRAINT processed_csvs_row_number_key UNIQUE (row_number);
+    ADD CONSTRAINT processed_csvs_row_number_identifier_key UNIQUE (row_number, identifier);
 
 
 --
