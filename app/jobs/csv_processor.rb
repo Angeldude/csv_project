@@ -15,9 +15,8 @@ class CsvProcessor < ApplicationJob
             row_hash = csv_hash(row, identifier, i)
             temp = ProcessedCsv.new(row_hash)
             err = CsvError.where(identifier: identifier, row_number: i)
-            temp.save
             CsvError.delete(err)
-            CsvError.create(identifier: identifier, row_number: i, row_errors: temp.errors.full_messages) unless temp.present?
+            CsvError.create(identifier: identifier, row_number: i, row_errors: temp.errors.full_messages) unless temp.save
         end
     end
 
