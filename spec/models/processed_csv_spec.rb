@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ProcessedCsv do
     it 'should not save a last name without a first name' do
-        processed_csv = ProcessedCsv.new(last: "Stevens")
+        processed_csv = ProcessedCsv.new(last: "Stevens",row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it 'should save a first name without a last name' do
@@ -10,23 +10,27 @@ RSpec.describe ProcessedCsv do
         expect(processed_csv.save).to be_truthy
     end
     it 'should not allow names to contain numbers or symbols' do
-        processed_csv = ProcessedCsv.new(first: "Stev3ens", last: "Tri23")
+        processed_csv = ProcessedCsv.new(first: "Stev3ens", last: "Tri23", row_number: 0, identifier: 'testing')
+        expect(processed_csv.save).to be_falsy
+    end
+    it 'should not allow names to be less than 2 characters' do
+        processed_csv = ProcessedCsv.new(first: "S", last: "T", row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it 'should not save an invalid phone number' do
-        processed_csv = ProcessedCsv.new(phone: "sicue233-2")
+        processed_csv = ProcessedCsv.new(phone: "sicue233-2", row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it 'should save exactly 10 digits on a phone, no more, no less' do
-        processed_csv = ProcessedCsv.new(phone: "233-(23).233")
+        processed_csv = ProcessedCsv.new(phone: "233-(23).233", row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it "should not allow a phone number's area code to start with 0" do
-        processed_csv = ProcessedCsv.new(phone: "0123456789")
+        processed_csv = ProcessedCsv.new(phone: "0123456789", row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it "should not allow a phone number's prefix to start with 1" do
-        processed_csv = ProcessedCsv.new(phone: "1234567890")
+        processed_csv = ProcessedCsv.new(phone: "2341567890", row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it 'should properly format a phone number' do
@@ -34,7 +38,7 @@ RSpec.describe ProcessedCsv do
         expect(processed_csv.phone_number).to eq('(233)233-1014')
     end
     it 'should not save an invalid email address' do
-        processed_csv = ProcessedCsv.new(email: "s@icu@e23.com")
+        processed_csv = ProcessedCsv.new(email: "s@icu@e23.com", row_number: 0, identifier: 'testing')
         expect(processed_csv.save).to be_falsy
     end
     it 'should not save a record without a row_number' do
