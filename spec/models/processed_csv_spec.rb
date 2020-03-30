@@ -21,6 +21,14 @@ RSpec.describe ProcessedCsv do
         processed_csv = ProcessedCsv.new(phone: "233-(23).233")
         expect(processed_csv.save).to be_falsy
     end
+    it "should not allow a phone number's area code to start with 0" do
+        processed_csv = ProcessedCsv.new(phone: "0123456789")
+        expect(processed_csv.save).to be_falsy
+    end
+    it "should not allow a phone number's prefix to start with 1" do
+        processed_csv = ProcessedCsv.new(phone: "1234567890")
+        expect(processed_csv.save).to be_falsy
+    end
     it 'should properly format a phone number' do
         processed_csv = ProcessedCsv.create!(phone: "2332331014", row_number:0, identifier:'testing')
         expect(processed_csv.phone_number).to eq('(233)233-1014')
