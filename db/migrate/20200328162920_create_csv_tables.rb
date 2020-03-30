@@ -24,23 +24,27 @@ class CreateCsvTables < ActiveRecord::Migration[6.0]
         primary key (id),
         unique(row_number, identifier)
       );
-      create index processed_csvs_id_idx on processed_csvs(id);
       create sequence csv_errors_id_seq;
       create table csv_errors(
         id integer not null
-          default nextval('csv_errors_id_seq'),
+        default nextval('csv_errors_id_seq'),
         row_number integer not null,
         identifier varchar(256) not null,
         row_errors text[],
         primary key (id),
         unique(row_number, identifier)
-      );
+        );
+        create index csv_files_id_idx on csv_files(id);
+        create index processed_csvs_id_idx on processed_csvs(id);
+        create index csv_errors_id_idx on csv_errors(id);
     })
   end
 
   def down
     execute(%{
+      drop index if exists csv_files_id_idx;
       drop index if exists processed_csvs_id_idx;
+      drop index if exists csv_errors_id_idx;
       drop table if exists csv_files;
       drop table if exists csv_errors;
       drop table if exists processed_csvs;
