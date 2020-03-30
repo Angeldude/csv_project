@@ -46,6 +46,7 @@ class CreateCsvTables < ActiveRecord::Migration[6.0]
       drop table if exists processed_csvs;
       drop sequence if exists processed_csvs_id_seq;
       drop sequence if exists csv_files_id_seq;
+      drop sequence if exists csv_errors_id_seq;
     })
   end
 end

@@ -13,16 +13,11 @@ class CsvProcessor < ApplicationJob
         ProcessedCsv.delete(rows)
         CSV.parse(csv.file.download, headers: true).each_with_index do |row, i|
             row_hash = csv_hash(row, identifier, i)
-            hashed = row_hash
-            temp = ProcessedCsv.new(hashed)
+            temp = ProcessedCsv.new(row_hash)
             err = CsvError.where(identifier: identifier, row_number: i)
-            begin
-                temp.save!
-                CsvError.delete(err)
-            rescue ActiveRecord::RecordInvalid
-                CsvError.delete(err)
-                CsvError.create(identifier: identifier, row_number: i, row_errors: temp.errors.full_messages)
-            end
+            temp.save
+            CsvError.delete(err)
+            CsvError.create(identifier: identifier, row_number: i, row_errors: temp.errors.full_messages) unless temp.present?
         end
     end
 
