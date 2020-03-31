@@ -21,12 +21,7 @@ class CsvProcessor < ApplicationJob
     end
 
     def phone_format(phone)
-        begin
-            temp = phone.scan(/\d/).join
-            temp.blank? ? phone : temp
-        rescue NoMethodError
-            phone
-        end
+        phone.present? ? phone.scan(/\d/).join : phone     
     end
 
     def csv_hash(row, identifier, row_count)
